@@ -1,0 +1,20 @@
+server:
+ port: 54321
+ servlet:
+  context-path: /freeswitch
+ tomcat:
+  uri-encoding: UTF-8
+
+spring:
+ application:
+ #相同的name，feign客户端会做负载均衡
+  name: freeswitch
+ http:
+  encoding:
+   force: true
+   charset: UTF-8
+   enabled: true
+
+  multipart:
+   max-file-size: 1024Mb
+   max-request-size: 1024Mb

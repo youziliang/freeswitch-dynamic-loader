@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://mybatis.org/schema/mybatis-spring
+       http://mybatis.org/schema/mybatis-spring.xsd">
+
+
+    <context:property-placeholder
+            file-encoding="UTF-8"
+            ignore-unresolvable="true"
+            ignore-resource-not-found="true" location=""/>
+
+    <context:component-scan base-package="com.chuanglan.freeswitch.dynamic.loader.dal.*"/>
+
+    <context:annotation-config/>
+
+    <bean id="console.DataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="url" value="${spring.datasource.url}"/>
+        <property name="username" value="${spring.datasource.username}"/>
+        <property name="password" value="${spring.datasource.password}"/>
+        <property name="driverClassName" value="${spring.datasource.driver-class-name}"/>
+        <property name="filters" value="${spring.datasource.druid.filters}"/>
+        <property name="maxActive" value="${spring.datasource.maxActive}"/>
+        <property name="initialSize" value="${spring.datasource.initialSize}"/>
+        <!--<property name="maxIdle" value="${spring.datasource.maxIdle}"/>-->
+        <property name="minIdle" value="${spring.datasource.minIdle}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${spring.datasource.timeBetweenEvictionRunsMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${spring.datasource.minEvictableIdleTimeMillis}"/>
+        <property name="validationQuery" value="${spring.datasource.validationQuery}"/>
+        <property name="testWhileIdle" value="${spring.datasource.testWhileIdle}"/>
+        <property name="testOnBorrow" value="${spring.datasource.testOnBorrow}"/>
+        <property name="testOnReturn" value="${spring.datasource.testOnReturn}"/>
+        <property name="maxOpenPreparedStatements" value="${spring.datasource.maxOpenPreparedStatements}"/>
+        <property name="poolPreparedStatements" value="${spring.datasource.poolPreparedStatements}"/>
+        <property name="removeAbandoned" value="${spring.datasource.removeAbandoned}"/>
+        <property name="removeAbandonedTimeout" value="${spring.datasource.removeAbandonedTimeout}"/>
+        <property name="logAbandoned" value="${spring.datasource.logAbandoned:false}"/>
+        <property name="defaultAutoCommit" value="${spring.datasource.defaultAutoCommit}"/>
+    </bean>
+
+    <bean id="console.TransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="console.DataSource"/>
+    </bean>
+    <bean id="console.TransactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="console.TransactionManager"/>
+    </bean>
+    <bean id="console.SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="console.DataSource"/>
+        <property name="mapperLocations" value="classpath*:com/chuanglan/freeswitch/dynamic/loader/dal/mapper/*.xml"/>
+    </bean>
+    <bean id="console.SqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="console.SqlSessionFactory"/>
+    </bean>
+    <mybatis:scan base-package="com.chuanglan.freeswitch.dynamic.loader.dal.mapper" template-ref="console.SqlSessionTemplate"
+                  name-generator="com.chuanglan.freeswitch.dynamic.loader.dal.spring.PrefixedBeanNameGenerator"/>
+
+</beans>

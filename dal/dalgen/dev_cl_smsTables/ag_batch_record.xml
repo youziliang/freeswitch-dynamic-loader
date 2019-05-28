@@ -1,0 +1,176 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="ag_batch_record" physicalName="ag_batch_record" remark="ag_batch_record">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:ag_batch_record">
+        <sqlmap>
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+            insert into ag_batch_record
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="batchNo != null">
+                    batch_no,
+                </if>
+                <if test="receTel != null">
+                    rece_tel,
+                </if>
+                <if test="ifRepeat != null">
+                    if_repeat,
+                </if>
+                <if test="ifCorrect != null">
+                    if_correct,
+                </if>
+                <if test="vars != null">
+                    vars,
+                </if>
+                <if test="createTime != null">
+                    create_time,
+                </if>
+                <if test="updateTime != null">
+                    update_time,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id,jdbcType=BIGINT},
+                </if>
+                <if test="batchNo != null">
+                    #{batchNo,jdbcType=VARCHAR},
+                </if>
+                <if test="receTel != null">
+                    #{receTel,jdbcType=VARCHAR},
+                </if>
+                <if test="ifRepeat != null">
+                    #{ifRepeat,jdbcType=BIT},
+                </if>
+                <if test="ifCorrect != null">
+                    #{ifCorrect,jdbcType=BIT},
+                </if>
+                <if test="vars != null">
+                    #{vars,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    #{createTime,jdbcType=INTEGER},
+                </if>
+                <if test="updateTime != null">
+                    #{updateTime,jdbcType=INTEGER},
+                </if>
+            </trim>
+        </sqlmap>
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表:ag_batch_record">
+        <sqlmap>
+            UPDATE ag_batch_record
+            SET
+            <trim suffixOverrides=",">
+                <if test="batchNo != null">
+                    batch_no = #{batchNo,jdbcType=VARCHAR},
+                </if>
+                <if test="receTel != null">
+                    rece_tel = #{receTel,jdbcType=VARCHAR},
+                </if>
+                <if test="ifRepeat != null">
+                    if_repeat = #{ifRepeat,jdbcType=BIT},
+                </if>
+                <if test="ifCorrect != null">
+                    if_correct = #{ifCorrect,jdbcType=BIT},
+                </if>
+                <if test="vars != null">
+                    vars = #{vars,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    create_time = #{createTime,jdbcType=INTEGER},
+                </if>
+                <if test="updateTime != null">
+                    update_time = #{updateTime,jdbcType=INTEGER},
+                </if>
+            </trim>
+            WHERE
+            id = #{id,jdbcType=BIGINT}
+        </sqlmap>
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:ag_batch_record">
+        <sqlmap>
+            DELETE FROM
+            ag_batch_record
+            WHERE
+            id = #{id,jdbcType=BIGINT}
+        </sqlmap>
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:ag_batch_record">
+        <sqlmap>
+            SELECT *
+            FROM ag_batch_record
+            WHERE
+            id = #{id,jdbcType=BIGINT}
+        </sqlmap>
+    </operation>
+
+    <operation name="insertTelsOrVars" multiplicity="many" remark="批量插入手机号或变量:ag_batch_record">
+        <sqlmap>
+            <foreach collection="list" item="object" index="index" separator=";">
+                insert into ag_batch_record
+                <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="object.id != null">
+                        id,
+                    </if>
+                    <if test="object.batchNo != null">
+                        batch_no,
+                    </if>
+                    <if test="object.receTel != null">
+                        rece_tel,
+                    </if>
+                    <if test="object.ifRepeat != null">
+                        if_repeat,
+                    </if>
+                    <if test="object.ifCorrect != null">
+                        if_correct,
+                    </if>
+                    <if test="object.vars != null">
+                        vars,
+                    </if>
+                    <if test="object.createTime != null">
+                        create_time,
+                    </if>
+                    <if test="object.updateTime != null">
+                        update_time,
+                    </if>
+                </trim>
+                <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test="object.id != null">
+                        #{object.id,jdbcType=BIGINT},
+                    </if>
+                    <if test="object.batchNo != null">
+                        #{object.batchNo,jdbcType=VARCHAR},
+                    </if>
+                    <if test="object.receTel != null">
+                        #{object.receTel,jdbcType=VARCHAR},
+                    </if>
+                    <if test="object.ifRepeat != null">
+                        #{object.ifRepeat,jdbcType=BIT},
+                    </if>
+                    <if test="object.ifCorrect != null">
+                        #{object.ifCorrect,jdbcType=BIT},
+                    </if>
+                    <if test="object.vars != null">
+                        #{object.vars,jdbcType=VARCHAR},
+                    </if>
+                    <if test="object.createTime != null">
+                        #{object.createTime,jdbcType=INTEGER},
+                    </if>
+                    <if test="object.updateTime != null">
+                        #{object.updateTime,jdbcType=INTEGER},
+                    </if>
+                </trim>
+            </foreach>
+        </sqlmap>
+    </operation>
+</table>

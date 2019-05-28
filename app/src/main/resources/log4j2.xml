@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+    <Properties>
+        <!-- 文件输出格式 -->
+        <Property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} |-%-5level [%thread] %c [%L] -| %msg%n</Property>
+        <Property name="PATH">${sys:log.path}/logs</Property>
+    </Properties>
+
+    <Appenders>
+        <!--这个输出控制台的配置，这里输出除了warn和error级别的信息到System.out -->
+        <Console name="console" target="SYSTEM_OUT">
+            <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) . -->
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="${PATTERN}"/>
+        </Console>
+
+        <RollingFile name="total" fileName="${PATH}/total.log"
+                     filePattern="${PATH}/$${date:yyyy-MM}/total-%d{yyyy-MM-dd}.log.gz">
+            <Filters>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="error" onMatch="DENY"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <PatternLayout pattern="${PATTERN}"/>
+        </RollingFile>
+
+        <RollingFile name="console-info" fileName="${PATH}/console-info.log"
+                     filePattern="${PATH}/$${date:yyyy-MM}/console-info-%d{yyyy-MM-dd}.log.gz">
+            <Filters>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="error" onMatch="DENY"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <PatternLayout pattern="${PATTERN}"/>
+        </RollingFile>
+
+        <RollingFile name="console-error" fileName="${PATH}/console-error.log"
+                     filePattern="${PATH}/$${date:yyyy-MM}/console-error-%d{yyyy-MM-dd}.log.gz">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <PatternLayout pattern="${PATTERN}"/>
+        </RollingFile>
+
+        <RollingFile name="console-file" fileName="${PATH}/console-file.log"
+                     filePattern="${PATH}/$${date:yyyy-MM}/console-file-%d{yyyy-MM-dd}.log.gz">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <PatternLayout pattern="${PATTERN}"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="all">
+            <appender-ref ref="console"/>
+        </Root>
+
+        <AsyncLogger name="com.chuanglan.freeswitch.dynamic.loader" additivity="false" level="info" includeLocation="true">
+            <appender-ref ref="total" level="all"/>
+            <appender-ref ref="console-info" level="info"/>
+            <appender-ref ref="console-error" level="error"/>
+            <appender-ref ref="console"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="console-file" additivity="false" level="info" includeLocation="true">
+            <appender-ref ref="console-file" level="all"/>
+            <appender-ref ref="console"/>
+        </AsyncLogger>
+    </Loggers>
+
+</Configuration>
